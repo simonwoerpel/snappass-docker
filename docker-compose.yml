@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  snappass:
+    build: .
+    command: gunicorn -w 8 -b 0.0.0.0:8000 snappass.main:app
+    ports:
+      - "8000:8000"
+    stop_signal: SIGINT
+    environment:
+      - REDIS_HOST=redis
+      - NO_SSL=True
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
